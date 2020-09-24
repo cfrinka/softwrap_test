@@ -13,7 +13,7 @@ export default function ContactForm(props) {
     let [values, setValues] = useState(initialFieldValues)
 
     useEffect(() => {
-        if (props.currentId == '')
+        if (props.currentId === '')
             setValues({
                 ...initialFieldValues
             })
@@ -91,7 +91,7 @@ export default function ContactForm(props) {
                     <div className='form-group'>
                     </div>
                 </div>
-                <input type='submit' value={props.currentId == '' ? 'Salvar' : 'Atualizar'} className='btn btn-primary btn-block' />
+                <input type='submit' value={props.currentId === '' ? 'Salvar' : 'Atualizar'} className='btn btn-primary btn-block' />
             </div>
         </form>
     )

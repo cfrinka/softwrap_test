@@ -9,24 +9,47 @@ export default function Contacts() {
 
     useEffect(() => {
         firebaseDb.child('contacts').on('value', snapshot => {
-            if(snapshot.val() != null)
-            setContactObjects({
-                ...snapshot.val()
-            })
+            if (snapshot.val() != null)
+                setContactObjects({
+                    ...snapshot.val()
+                })
         })
     })
 
-    const addOrEdit = obj =>{
-        if(currentId == '')
-        firebaseDb.child('contacts').push(
-            obj,
-            err =>{
-                if(err)
-                console.log(err)
-            }
-        )
-        else 
-        firebaseDb.child('contacts')
+    const addOrEdit = obj => {
+        if (currentId === '')
+            firebaseDb.child('contacts').push(
+                obj,
+                err => {
+                    if (err)
+                        console.log(err)
+                    else
+                        setCurrentID('')
+                }
+            )
+        else
+            firebaseDb.child(`contacts/${currentId}`).set(
+                obj,
+                err => {
+                    if (err)
+                        console.log(err)
+                    else
+                        setCurrentID('')
+                }
+            )
+    }
+
+    const onDelete = key =>{
+        if(window.confirm('Tem certeza? Não será possível reverter esta ação!')){
+            firebaseDb.child(`contacts/${currentId}`).remove(                
+                err => {
+                    if (err)
+                        console.log(err)
+                    else
+                        setCurrentID('')
+                }
+            )
+        }
     }
 
     return (
@@ -39,7 +62,7 @@ export default function Contacts() {
             </div>
             <div className='row'>
                 <div className='col-md-5'>
-                    <ContactForm {...({addOrEdit, currentId, contactObjects})}/>
+                    <ContactForm {...({ addOrEdit, currentId, contactObjects })} />
                 </div>
                 <div className='col-md-7'>
                     <table className='table table-borderless border-stripped'>
@@ -65,10 +88,10 @@ export default function Contacts() {
                                         <td>{contactObjects[id].city}</td>
                                         <td>{contactObjects[id].state}</td>
                                         <td>
-                                            <a className='btn text-primary' onClick={() => {setCurrentID(id)}}>
+                                            <a className='btn text-primary' onClick={() => { setCurrentID(id) }}>
                                                 <i className='fas fa-pencil-alt'></i>
                                             </a>
-                                            <a className='btn text-danger'>
+                                            <a className='btn text-danger' onClick={() => { onDelete(id) }}>
                                                 <i className='fas fa-trash-alt'></i>
                                             </a>
                                         </td>
