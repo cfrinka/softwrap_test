@@ -8,13 +8,14 @@ export default function Contacts() {
     let [currentId, setCurrentID] = useState('')
 
     useEffect(() => {
-        firebaseDb.child('contacts').on('value', snapshot => {
-            if (snapshot.val() != null)
-                setContactObjects({
-                    ...snapshot.val()
-                })
-        })
-    })
+        const unsubscribe = firebaseDb.child('contacts').on('value', snapshot => {
+          if (snapshot.val() != null)
+            setContactObjects({
+                ...snapshot.val()
+            })
+          })
+        return unsubscribe
+      }, [])
 
     const addOrEdit = obj => {
         if (currentId === '')
@@ -88,10 +89,10 @@ export default function Contacts() {
                                         <td>{contactObjects[id].city}</td>
                                         <td>{contactObjects[id].state}</td>
                                         <td>
-                                            <a className='btn text-primary' onClick={() => { setCurrentID(id) }}>
+                                            <a href='#' className='btn text-primary' onClick={() => { setCurrentID(id) }}>
                                                 <i className='fas fa-pencil-alt'></i>
                                             </a>
-                                            <a className='btn text-danger' onClick={() => { onDelete(id) }}>
+                                            <a href='#' className='btn text-danger' onClick={() => { onDelete(id) }}>
                                                 <i className='fas fa-trash-alt'></i>
                                             </a>
                                         </td>

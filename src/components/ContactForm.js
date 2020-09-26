@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
 
 export default function ContactForm(props) {
+
+
     const initialFieldValues = {
         fullName: '',
         tin: '',
@@ -9,26 +11,27 @@ export default function ContactForm(props) {
         city: '',
         state: ''
     }
-
-    let [values, setValues] = useState(initialFieldValues)
-
+    const [values, setValues] = useState(initialFieldValues)
+    
     useEffect(() => {
-        if (props.currentId === '')
+        const contactId = Object.keys(props.contactObjects)[0]
+        if (!contactId)
             setValues({
                 ...initialFieldValues
             })
         else
             setValues({
-                ...props.contactObjects[props.currentId]
+                ...props.contactObjects[contactId] 
             })
-    }, [props.currentId, props.contactObjects])
+    }, [props.contactObjects])
 
     const handleInputChange = e => {
-        let { name, value } = e.target
+        var { name, value } = e.target
         setValues({
             ...values,
             [name]: value
         })
+        console.log(value)
     }
 
     const handleFormSubmit = e => {
