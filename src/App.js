@@ -1,13 +1,13 @@
 import React from 'react';
 
 import './App.css';
-import Contacts from './components/Contacts';
+import Try from './components/Try';
 
 function App() {
   return (
     <div className='row'>
       <div className='col-md8- offset-md-2'>
-        <Contacts />
+        <Try />
       </div>
     </div>
   );

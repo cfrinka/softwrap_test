@@ -12,31 +12,35 @@ export default function ContactForm(props) {
         state: ''
     }
     const [values, setValues] = useState(initialFieldValues)
-    
+
     useEffect(() => {
         const contactId = Object.keys(props.contactObjects)[0]
-        if (!contactId)
+        if (contactId === '')
             setValues({
                 ...initialFieldValues
             })
         else
             setValues({
-                ...props.contactObjects[contactId] 
+                ...props.contactObjects[contactId]
             })
-    }, [props.contactObjects])
+
+        
+    }
+        , [props.contactObjects])
 
     const handleInputChange = e => {
-        var { name, value } = e.target
+        const { name, value } = e.target
         setValues({
             ...values,
             [name]: value
         })
-        console.log(value)
+        
     }
 
     const handleFormSubmit = e => {
         e.preventDefault()
         props.addOrEdit(values)
+        setValues('')
     }
 
     return (
